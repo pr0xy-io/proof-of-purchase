@@ -1,5 +1,6 @@
 # project files
 yarn.lock
+yarn-error.log
 
 # not necessary to be committed as they're a package
 # sites like remix will automatically install them
@@ -9,6 +10,11 @@ yarn.lock
 # should only contain testing packages
 node_modules
 
-# build files/folders for the solidity contracts
+# build files/folders for the solidity contracts (hardhat)
 cache
-build
+artifacts
+typechain-types
+
+# hardhat testing reports
+coverage
+coverage.json
