@@ -1,0 +1,12 @@
+{
+  "name": "proof-of-purchase",
+  "version": "0.0.1",
+  "description": "proof of purchase implementation",
+  "main": "testing/index.ts",
+  "repository": "https://github.com/pr0xy-io/proof-of-purchase",
+  "author": "gimpey <gimpey@pr0xy.io>",
+  "license": "MIT",
+  "devDependencies": {
+    "@openzeppelin/contracts": "^4.9.2"
+  }
+}
