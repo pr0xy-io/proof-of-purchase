@@ -6,7 +6,16 @@
   "repository": "https://github.com/pr0xy-io/proof-of-purchase",
   "author": "gimpey <gimpey@pr0xy.io>",
   "license": "MIT",
+  "scripts": {
+    "clear": "rimraf build && rimraf cache",
+    "build": "yarn clear && waffle"
+  },
   "devDependencies": {
-    "@openzeppelin/contracts": "^4.9.2"
+    "@openzeppelin/contracts": "^4.9.2",
+    "chai": "^4.3.7",
+    "ethereum-waffle": "^4.0.10",
+    "ethers": "^6.6.2",
+    "mocha": "^10.2.0",
+    "rimraf": "^5.0.1"
   }
 }

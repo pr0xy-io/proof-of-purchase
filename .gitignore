@@ -8,3 +8,7 @@ yarn.lock
 
 # should only contain testing packages
 node_modules
+
+# build files/folders for the solidity contracts
+cache
+build
