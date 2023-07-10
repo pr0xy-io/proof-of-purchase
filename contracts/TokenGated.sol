@@ -7,20 +7,21 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/token/common/ERC2981.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/finance/PaymentSplitter.sol";
 
 /** @dev initializes the primary collection and allows access to `ownerOf` */
 interface Primary {
     function ownerOf(uint256 tokenId) external view returns (address owner);
 }
 
-contract TokenGated is ERC721AQueryable, ERC2981, Ownable, ReentrancyGuard {
+contract TokenGated is ERC721AQueryable, ERC2981, Ownable, ReentrancyGuard, PaymentSplitter {
     using Strings for uint256;
+
+    // fund recipients
+    address[] public payees;
 
     // defines the price of the receipts
     uint256 public price;
-
-    // defines the withdrawal address
-    address public vault;
 
     // references the metadata location
     string public baseURI;
@@ -34,16 +35,11 @@ contract TokenGated is ERC721AQueryable, ERC2981, Ownable, ReentrancyGuard {
     // maps the receipt to the primary collections `tokenId`
     mapping(uint256 => uint256) public receiptFor;
 
-    constructor(address _vault, address _primaryCollection, uint256 _price) ERC721A("TokenGated", "POP") {
+    constructor(address _primaryCollection, uint256 _price, address[] memory _payees, uint256[] memory _shares) ERC721A("TokenGated", "POP") PaymentSplitter(_payees, _shares) {
         primaryCollection = _primaryCollection;
+        payees= _payees;
 
-        setVault(_vault);
         setPrice(_price);
-    }
-
-    /** @dev sets the vault to the desired withdrawal address */
-    function setVault(address _vault) public onlyOwner {
-        vault = _vault;
     }
 
     /** @dev sets the price to the desired price per receipt */
@@ -104,5 +100,12 @@ contract TokenGated is ERC721AQueryable, ERC2981, Ownable, ReentrancyGuard {
     
     function supportsInterface(bytes4 interfaceId) public view virtual override(ERC721A, ERC2981, IERC721A) returns (bool) {
         return ERC721A.supportsInterface(interfaceId) || ERC2981.supportsInterface(interfaceId);
+    }
+
+    /** @dev releases ether from the contract */
+    function releaseTotal() external nonReentrant {
+        for(uint256 i; i < payees.length; ++i) {
+            release(payable(payees[i]));
+        }
     }
 }
