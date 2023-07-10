@@ -86,7 +86,7 @@ contract TokenGated is ERC721AQueryable, ERC2981, Ownable, ReentrancyGuard, Paym
         require(tx.origin == msg.sender, "contracts are not permitted");
 
         for(uint256 i; i < primaryIds.length; i++) {
-            // require(Primary(primaryCollection).ownerOf(primaryIds[i]) == to, "invalid owner of primary token");
+            require(Primary(primaryCollection).ownerOf(primaryIds[i]) == to, "invalid owner of primary token");
             _mint(to, 1);
             receiptFor[_totalMinted()] = primaryIds[i];
         }
