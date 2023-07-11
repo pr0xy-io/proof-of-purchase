@@ -2,6 +2,16 @@
 yarn.lock
 yarn-error.log
 
+# yarn v3 state, the release should be committed
+# more info here: https://yarnpkg.com/getting-started/migration
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
 # not necessary to be committed as they're a package
 # sites like remix will automatically install them
 # generally held in node_modules anyways
