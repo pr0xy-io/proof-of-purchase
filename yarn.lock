@@ -3487,7 +3487,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:^10.2.2, glob@npm:^10.2.5":
+"glob@npm:^10.2.2, glob@npm:^10.2.5, glob@npm:^10.3.3":
   version: 10.3.3
   resolution: "glob@npm:10.3.3"
   dependencies:
@@ -5557,6 +5557,7 @@ __metadata:
     dotenv: ^16.3.1
     erc721a: ^4.2.3
     ethers: ^6.6.2
+    glob: ^10.3.3
     hardhat: ^2.16.1
     hardhat-gas-reporter: ^1.0.9
     mocha: ^10.2.0

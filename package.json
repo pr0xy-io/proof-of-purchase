@@ -1,6 +1,6 @@
 {
   "name": "proof-of-purchase",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "proof of purchase implementation",
   "main": "testing/index.ts",
   "repository": "https://github.com/pr0xy-io/proof-of-purchase",
@@ -10,7 +10,8 @@
     "clear": "rimraf artifacts && rimraf cache && rimraf typechain-types rimraf coverage && rimraf coverage.json",
     "build": "npx hardhat compile",
     "test": "cross-env NODE_ENV=test mocha --timeout 10000",
-    "coverage": "npx hardhat coverage"
+    "coverage": "npx hardhat coverage",
+    "update-version": "ts-node ./scripts/release/updateVersion.ts"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.1",
@@ -29,6 +30,7 @@
     "dotenv": "^16.3.1",
     "erc721a": "^4.2.3",
     "ethers": "^6.6.2",
+    "glob": "^10.3.3",
     "hardhat": "^2.16.1",
     "hardhat-gas-reporter": "^1.0.9",
     "mocha": "^10.2.0",
