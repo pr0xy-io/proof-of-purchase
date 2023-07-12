@@ -1,8 +1,7 @@
 import { HardhatEthersSigner } from "@nomicfoundation/hardhat-ethers/signers";
-import { ZERO_ADDRESS } from "./utils/constants";
-import { parseEther, formatEther } from "ethers";
+import { parseEther } from "ethers";
 import { expect } from "chai";
-import hre, { ethers } from "hardhat";
+import hre from "hardhat";
 
 import "@nomicfoundation/hardhat-chai-matchers";
 import "@nomicfoundation/hardhat-ethers";

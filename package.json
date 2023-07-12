@@ -9,7 +9,7 @@
   "scripts": {
     "clear": "rimraf artifacts && rimraf cache && rimraf typechain-types rimraf coverage && rimraf coverage.json",
     "build": "npx hardhat compile",
-    "test": "cross-env NODE_ENV=test mocha",
+    "test": "cross-env NODE_ENV=test mocha --timeout 10000",
     "coverage": "npx hardhat coverage"
   },
   "devDependencies": {
