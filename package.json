@@ -7,7 +7,7 @@
   "author": "gimpey <gimpey@pr0xy.io>",
   "license": "MIT",
   "scripts": {
-    "clear": "rimraf artifacts && rimraf cache && rimraf typechain-types",
+    "clear": "rimraf artifacts && rimraf cache && rimraf typechain-types rimraf coverage && rimraf coverage.json",
     "build": "npx hardhat compile",
     "test": "cross-env NODE_ENV=test mocha",
     "coverage": "npx hardhat coverage"
