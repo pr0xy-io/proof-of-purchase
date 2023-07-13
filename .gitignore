@@ -30,3 +30,6 @@ typechain-types
 # hardhat testing reports
 coverage
 coverage.json
+
+# stores deployments for future reference
+deployments
