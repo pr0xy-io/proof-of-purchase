@@ -2,7 +2,7 @@
 yarn-error.log
 
 # environment variables
-.env
+.env*
 
 # yarn v3 state, the release should be committed
 # more info here: https://yarnpkg.com/getting-started/migration
