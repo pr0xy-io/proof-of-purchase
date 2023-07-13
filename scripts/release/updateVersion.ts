@@ -40,6 +40,7 @@ for (const file of update) {
   const content = fs.readFileSync(file, "utf8");
   const versionStringLine = `${versionPrefix}${version}`;
 
+  // deriving the updated content and replacing
   let updatedContent: string;
   if (content.includes(versionPrefix)) {
     updatedContent = content.replace(
@@ -53,6 +54,7 @@ for (const file of update) {
     );
   }
 
+  // writing the file with the updated content
   fs.writeFileSync(file, updatedContent);
 
   console.log(`Updated ${file} with ${version}.`);
