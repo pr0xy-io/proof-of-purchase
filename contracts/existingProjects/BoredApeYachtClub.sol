@@ -1,4 +1,9 @@
 // SPDX-License-Identifier: MIT
+// Originally written by Yuga Labs
+// With minimal updates by pr0xy
+// Disclaimer: This contract is purely for educational purposes and is not
+//  meant to be used in a live environment. pr0xy takes no responsibility
+//  for the use of this contract for commercial or otherwise malicious purposes.
 
 pragma solidity ^0.8.18;
 
