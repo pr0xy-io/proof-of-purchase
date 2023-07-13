@@ -1,0 +1,34 @@
+name: "Triage Stale issues"
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  issue-cleanup:
+    runs-on: ubuntu-latest
+    name: Triage Stale Issues
+    steps:
+      - uses: aws-actions/stale-issue-cleanup@v4
+        with:
+          issue-types: issues
+          ancient-issue-message: Hello 👋! It looks like this issue hasn't been active in longer than five months. We encourage you to check if this is still an issue in the latest release. In the absence of more information, we will be closing this issue soon. If you find that this is still a problem, please feel free to provide a comment or upvote with a reaction on the initial post to prevent automatic closure. If the issue is already closed, please feel free to open a new one.
+          stale-issue-message: Hello 👋! It looks like this issue hasn’t been active in longer than two months. We encourage you to check if this is still an issue in the latest release. In the absence of more information, we will be closing this issue soon. If you find that this is still a problem, please feel free to provide a comment or upvote with a reaction on the initial post to prevent automatic closure. If the issue is already closed, please feel free to open a new one.
+
+          # required labels
+          stale-issue-label: "status: stale"
+          exempt-issue-labels: "status: triage needed,status: confirmed,status: accepted"
+          response-requested-label: "status: response required"
+          closed-for-staleness-label: "status: resolved/stale"
+
+          # issue timing
+          days-before-stale: 60
+          days-before-close: 14
+          days-before-ancient: 150
+
+          # exempts issues based on upvotes/reactions
+          minimum-upvotes-to-exempt: 2
+
+          repo-token: ${{ secrets.STALE_ISSUE_TRIAGE }}
+          loglevel: DEBUG

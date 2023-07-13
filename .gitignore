@@ -1,6 +1,9 @@
 # project files
 yarn-error.log
 
+# environment variables
+.env
+
 # yarn v3 state, the release should be committed
 # more info here: https://yarnpkg.com/getting-started/migration
 .pnp.*
