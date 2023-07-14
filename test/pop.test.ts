@@ -46,6 +46,8 @@ describe("Proof of Purchase", () => {
     ]);
 
     pop = await hre.ethers.deployContract("TokenGated", [
+      "ProofOfPurchase",
+      "POP",
       bayc.target,
       config.startingPrice,
       [vault.address],
