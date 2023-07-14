@@ -28,7 +28,6 @@ const deploy = async () => {
   console.log(`Transaction pending with target address ${bayc.target}.`);
   await bayc.waitForDeployment();
 
-  // Start deployment, returning a promise that resolves to a contract object
   console.log(`Contract successfully deployed to ${bayc.target}.`);
   const timestamp = Date.now();
 
@@ -47,7 +46,7 @@ const deploy = async () => {
 
   // writing the data to a file to be referenced by the POP contract
   fs.writeFileSync(
-    `./deployments/deploymentBayc_${timestamp}.json`,
+    `./deployments/deploymentBayc_${timestamp}_${network}.json`,
     deployment,
     "utf-8"
   );
