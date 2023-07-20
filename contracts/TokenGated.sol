@@ -39,7 +39,7 @@ contract TokenGated is ERC721AQueryable, ERC2981, Ownable, ReentrancyGuard, Paym
 
     constructor(string memory name, string memory symbol, address _primaryCollection, uint256 _price, address[] memory _payees, uint256[] memory _shares) ERC721A(name, symbol) PaymentSplitter(_payees, _shares) {
         primaryCollection = _primaryCollection;
-        payees= _payees;
+        payees = _payees;
 
         setPrice(_price);
     }
