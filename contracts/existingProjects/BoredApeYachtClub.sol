@@ -24,7 +24,7 @@ contract BoredApeYachtClub is ERC721Enumerable, Ownable {
 
     uint256 public startingIndex;
 
-    uint256 public constant apePrice = 80000000000000000; //0.08 ETH
+    uint256 public constant apePrice = 80000000000000; //0.00008 ETH
 
     uint public constant maxApePurchase = 20;
 
