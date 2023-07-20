@@ -75,12 +75,6 @@ describe("Proof of Purchase", () => {
       expect(contractOwner).to.equal(owner.address);
     });
 
-    // todo: implement this for the payment splitter
-    // it("properly sets the vault", async () => {
-    //   const contractVault = await pop.vault();
-    //   expect(contractVault).to.equal(vault.address);
-    // });
-
     it("properly initializes the price", async () => {
       const contractPrice = await pop.price();
       expect(contractPrice).to.equal(config.startingPrice);

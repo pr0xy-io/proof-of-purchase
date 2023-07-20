@@ -42,7 +42,7 @@ const deploy = async () => {
     "Made of Ape",
     "MOFA",
     configBayc.contractAddress,
-    `${parseEther("0.04")}`,
+    `${parseEther("0.00004")}`,
     [deployer.address],
     [100],
   ];
