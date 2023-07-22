@@ -17,9 +17,8 @@ const config = {
  * @description Test suite for Proof of Purchase token.
  *
  * @resource https://hardhat.org/tutorial
- *
- * todo: beforeAll instead of beforeEach (https://stackoverflow.com/questions/37912397)
  */
+// todo: beforeAll instead of beforeEach (https://stackoverflow.com/questions/37912397)
 describe("Proof of Purchase", () => {
   let pop: any;
   let bayc: any;
