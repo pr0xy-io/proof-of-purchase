@@ -17,9 +17,8 @@ const config = {
  * @description Test suite for Proof of Purchase token.
  *
  * @resource https://hardhat.org/tutorial
- *
- * todo: beforeAll instead of beforeEach (https://stackoverflow.com/questions/37912397)
  */
+// todo: beforeAll instead of beforeEach (https://stackoverflow.com/questions/37912397)
 describe("Proof of Purchase", () => {
   let pop: any;
   let bayc: any;
@@ -45,6 +44,8 @@ describe("Proof of Purchase", () => {
     ]);
 
     pop = await hre.ethers.deployContract("TokenGated", [
+      "ProofOfPurchase",
+      "POP",
       bayc.target,
       config.startingPrice,
       [vault.address],
@@ -66,12 +67,6 @@ describe("Proof of Purchase", () => {
       const contractOwner = await pop.owner();
       expect(contractOwner).to.equal(owner.address);
     });
-
-    // todo: implement this for the payment splitter
-    // it("properly sets the vault", async () => {
-    //   const contractVault = await pop.vault();
-    //   expect(contractVault).to.equal(vault.address);
-    // });
 
     it("properly initializes the price", async () => {
       const contractPrice = await pop.price();
