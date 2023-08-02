@@ -9,7 +9,7 @@ import "@nomicfoundation/hardhat-ethers";
 const config = {
   startingPrice: parseEther("0.04"),
   updatedPrice: parseEther("0.02"),
-  generateTest: [6, 9, 1],
+  generateTest: [2, 4, 1],
 };
 
 /**
@@ -38,11 +38,10 @@ describe("Proof of Purchase", () => {
     vault = signers[3];
 
     // deploys a bored ape contract to test interactions with it
-    bayc = await hre.ethers.deployContract("BoredApeYachtClub", [
-      "Bored Ape Yacht Club",
-      "BAYC",
-      10000,
-      1619060596,
+    bayc = await hre.ethers.deployContract("BoredApeTest", [
+      "Bored Ape Test",
+      "BAT",
+      "https://cdn.pr0xy.io/mofa/boredapetest.json",
     ]);
 
     pop = await hre.ethers.deployContract("TokenGated", [
@@ -51,17 +50,12 @@ describe("Proof of Purchase", () => {
       [vault.address],
       [100],
     ]);
-
-    // ensuring the sale is active for testing
-    await bayc.connect(owner).flipSaleState();
-    const state = await bayc.saleIsActive();
-    expect(state).to.equal(true);
   });
 
   /** @description Running some basic BAYC functions. */
   describe("Bored Ape Yacht Club", () => {
     it("allows someone to purchase a BAYC", async () => {
-      await bayc.connect(user).mintApe(5, { value: parseEther("0.40") });
+      await bayc.connect(user).mintApe(5);
       expect(await bayc.balanceOf(user.address)).to.equal(5);
     });
   });
@@ -117,9 +111,9 @@ describe("Proof of Purchase", () => {
     });
 
     it("allows the owner to generate tokens for a user", async () => {
-      // allocating 10 board apes to the users wallet
-      await bayc.connect(user).mintApe(10, { value: parseEther("0.80") });
-      expect(await bayc.balanceOf(user.address)).to.equal(10);
+      // allocating 5 board apes to the users wallet
+      await bayc.connect(user).mintApe(5);
+      expect(await bayc.balanceOf(user.address)).to.equal(5);
 
       await pop.connect(owner).setActive(true);
 
@@ -138,7 +132,7 @@ describe("Proof of Purchase", () => {
   describe("Soulbound", () => {
     it("restricts transfers after mint", async () => {
       // allocating 1 board ape to the users wallet
-      await bayc.connect(user).mintApe(1, { value: parseEther("0.08") });
+      await bayc.connect(user).mintApe(1);
       expect(await bayc.balanceOf(user.address)).to.equal(1);
 
       await pop.connect(owner).setActive(true);

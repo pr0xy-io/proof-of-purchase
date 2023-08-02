@@ -21,7 +21,11 @@ const deploy = async () => {
   console.log(`Deploying Bored Ape Yacht Club [Test] to \`${network}\`.`);
 
   // defining the arguments for bored apes
-  const boredApeArgs = ["Bored Ape Yacht Club", "BAYC", 10000, 1619060596];
+  const boredApeArgs = [
+    "Bored Ape Test",
+    "BAT",
+    "https://cdn.pr0xy.io/mofa/boredapetest.json",
+  ];
 
   // deploy the bored ape yacht club contract
   const bayc = await ethers.deployContract("BoredApeYachtClub", boredApeArgs);
