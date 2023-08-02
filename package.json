@@ -1,6 +1,6 @@
 {
   "name": "proof-of-purchase",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "proof of purchase implementation",
   "main": "testing/index.ts",
   "repository": "https://github.com/pr0xy-io/proof-of-purchase",
