@@ -18,7 +18,8 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract BoredApeTest is ERC721Enumerable, Ownable {
     using SafeMath for uint256;
 
-    uint public constant maxApePurchase = 5;
+    uint public constant MAX_PER = 5;
+    uint public constant PRICE = 0.01 ether;
 
     string public staticURI;
 
@@ -30,16 +31,22 @@ contract BoredApeTest is ERC721Enumerable, Ownable {
         staticURI = _staticURI;
     }
 
-    function mintApe(uint numberOfTokens) public {
-        require(numberOfTokens <= maxApePurchase, "Can only mint 5 tokens at a time");
+    function mintApe(uint numberOfTokens) public payable {
+        require(numberOfTokens <= MAX_PER, "Can only mint 5 tokens at a time");
+        require(numberOfTokens * PRICE <= msg.value, "Ether value sent is not correct");
         
         for(uint i = 0; i < numberOfTokens; i++) {
             uint mintIndex = totalSupply();
-                _safeMint(msg.sender, mintIndex);
+            _safeMint(msg.sender, mintIndex);
         }
     }
 
     function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
         return staticURI;
+    }
+
+    function withdraw() public onlyOwner {
+        uint balance = address(this).balance;
+        require(payable(msg.sender).send(balance));
     }
 }

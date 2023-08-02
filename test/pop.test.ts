@@ -18,7 +18,6 @@ const config = {
  *
  * @resource https://hardhat.org/tutorial
  */
-// todo: beforeAll instead of beforeEach (https://stackoverflow.com/questions/37912397)
 describe("Proof of Purchase", () => {
   let pop: any;
   let bayc: any;
@@ -51,14 +50,6 @@ describe("Proof of Purchase", () => {
       [vault.address],
       [100],
     ]);
-  });
-
-  /** @description Running some basic BAYC functions. */
-  describe("Bored Ape Yacht Club", () => {
-    it("allows someone to purchase a BAYC", async () => {
-      await bayc.connect(user).mintApe(5);
-      expect(await bayc.balanceOf(user.address)).to.equal(5);
-    });
   });
 
   /** @description Tests related to initial deployment. */
@@ -107,7 +98,7 @@ describe("Proof of Purchase", () => {
 
     it("allows the owner to generate tokens for a user", async () => {
       // allocating 5 board apes to the users wallet
-      await bayc.connect(user).mintApe(5);
+      await bayc.connect(user).mintApe(5, { value: parseEther("0.05") });
       expect(await bayc.balanceOf(user.address)).to.equal(5);
 
       await pop.connect(owner).setActive(true);
@@ -127,7 +118,7 @@ describe("Proof of Purchase", () => {
   describe("Soulbound", () => {
     it("restricts transfers after mint", async () => {
       // allocating 1 board ape to the users wallet
-      await bayc.connect(user).mintApe(1);
+      await bayc.connect(user).mintApe(1, { value: parseEther("0.01") });
       expect(await bayc.balanceOf(user.address)).to.equal(1);
 
       await pop.connect(owner).setActive(true);
