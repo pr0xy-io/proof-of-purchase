@@ -12,8 +12,8 @@
     "build": "npx hardhat compile",
     "test": "cross-env NODE_ENV=development npx hardhat test --network hardhat",
     "coverage": "npx hardhat coverage",
-    "deploy:bayc": "cross-env NODE_ENV=deploy npx hardhat run ./scripts/deployment/deployBayc.ts",
-    "deploy:dev": "cross-env NODE_ENV=deploy npx hardhat run ./scripts/deployment/deployMofa.ts",
+    "deploy:bayc": "cross-env NODE_ENV=deploy npx hardhat run ./scripts/deployment/deployBayc.ts --network sepolia",
+    "deploy:dev": "cross-env NODE_ENV=deploy npx hardhat run ./scripts/deployment/deployMofa.ts --network sepolia",
     "deploy:prod": "cross-env NODE_ENV=deploy npx hardhat run ./scripts/deployment/deployMofa.ts --network mainnet"
   },
   "devDependencies": {

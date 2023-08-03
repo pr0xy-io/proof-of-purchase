@@ -28,7 +28,7 @@ const deploy = async () => {
   ];
 
   // deploy the bored ape yacht club contract
-  const bayc = await ethers.deployContract("BoredApeYachtClub", boredApeArgs);
+  const bayc = await ethers.deployContract("BoredApeTest", boredApeArgs);
   console.log(`Transaction pending with target address ${bayc.target}.`);
   await bayc.waitForDeployment();
 
