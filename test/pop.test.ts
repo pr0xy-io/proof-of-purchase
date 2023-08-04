@@ -147,4 +147,6 @@ describe("Proof of Purchase", () => {
       ).to.be.revertedWith("token is soulbound");
     });
   });
+
+  // todo: add tests for withdrawal from the pop contract
 });
