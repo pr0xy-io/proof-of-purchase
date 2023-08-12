@@ -112,6 +112,21 @@ describe("Proof of Purchase", () => {
         expect(await pop.receiptFor(index)).to.equal(primaryToken);
       });
     });
+
+    it("allows a user to purchase tokens", async () => {
+      // the user first purchases bored ape tokens
+      await bayc.connect(user).mintApe(5, { value: parseEther("0.05") });
+      expect(await bayc.balanceOf(user.address)).to.equal(5);
+
+      // the owner then activates the sale of the mofa tokens
+      await pop.connect(owner).setActive(true);
+
+      // then the user can purchase the mofa tokens
+      await pop
+        .connect(user)
+        .purchase(config.generateTest, { value: parseEther("0.12") });
+      expect(await pop.balanceOf(user.address)).to.equal(3);
+    });
   });
 
   /** @description Ensuring the tokens are soulbound (untradable). */
@@ -148,5 +163,40 @@ describe("Proof of Purchase", () => {
     });
   });
 
-  // todo: add tests for withdrawal from the pop contract
+  /** @description Properly sets the URI. */
+  describe("URI", () => {
+    it("sets the URI", async () => {
+      // allocating 5 board apes to the users wallet
+      await bayc.connect(user).mintApe(5, { value: parseEther("0.05") });
+      expect(await bayc.balanceOf(user.address)).to.equal(5);
+
+      await pop.connect(owner).setActive(true);
+
+      await pop.connect(owner).generate(user.address, config.generateTest);
+
+      await pop.setBaseURI("https://cdn.pr0xy.io/mofa/");
+
+      const uri = await pop.tokenURI(1);
+
+      expect(uri).to.equal("https://cdn.pr0xy.io/mofa/1");
+    });
+  });
+
+  /** @description Ensuring withdrawals are performed correctly. */
+  describe("Withdrawals", () => {
+    it("correctly withdraws to the vault", async () => {
+      const startingBalance = await hre.ethers.provider.getBalance(vault);
+
+      await bayc.connect(user).mintApe(5, { value: parseEther("0.05") });
+      await pop.connect(owner).setActive(true);
+      await pop
+        .connect(user)
+        .purchase(config.generateTest, { value: parseEther("0.12") });
+      await pop.connect(owner).releaseTotal();
+
+      const endingBalance = await hre.ethers.provider.getBalance(vault);
+
+      expect(endingBalance).to.be.gt(startingBalance);
+    });
+  });
 });
