@@ -1,10 +1,9 @@
 import { HardhatEthersSigner } from "@nomicfoundation/hardhat-ethers/signers";
 import { expect } from "chai";
-import hre from "hardhat";
+import hre, { ethers } from "hardhat";
 
 import "@nomicfoundation/hardhat-chai-matchers";
 import "@nomicfoundation/hardhat-ethers";
-import { parseEther } from "ethers";
 
 /**
  * @title Bored Ape Testing
@@ -35,7 +34,7 @@ describe("Bored Ape Yacht Club [Test]", () => {
   /** @description Running some basic BAYC functions. */
   describe("Purchasing", () => {
     it("allows someone to purchase a BAYC", async () => {
-      await bayc.connect(user).mintApe(5, { value: parseEther("0.05") });
+      await bayc.connect(user).mintApe(5, { value: ethers.parseEther("0.05") });
       expect(await bayc.balanceOf(user.address)).to.equal(5);
     });
   });
@@ -52,7 +51,7 @@ describe("Bored Ape Yacht Club [Test]", () => {
   describe("Withdrawal", () => {
     it("withdraws the ETH to the owner's account", async () => {
       const startingBalance = await hre.ethers.provider.getBalance(owner);
-      await bayc.connect(user).mintApe(5, { value: parseEther("0.05") });
+      await bayc.connect(user).mintApe(5, { value: ethers.parseEther("0.05") });
       await bayc.connect(owner).withdraw();
       const endingBalance = await hre.ethers.provider.getBalance(owner);
 

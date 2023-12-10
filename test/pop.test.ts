@@ -1,14 +1,13 @@
 import { HardhatEthersSigner } from "@nomicfoundation/hardhat-ethers/signers";
-import { parseEther } from "ethers";
 import { expect } from "chai";
-import hre from "hardhat";
+import hre, { ethers } from "hardhat";
 
 import "@nomicfoundation/hardhat-chai-matchers";
 import "@nomicfoundation/hardhat-ethers";
 
 const config = {
-  startingPrice: parseEther("0.04"),
-  updatedPrice: parseEther("0.02"),
+  startingPrice: ethers.parseEther("0.04"),
+  updatedPrice: ethers.parseEther("0.02"),
   generateTest: [2, 4, 1],
 };
 
@@ -98,7 +97,7 @@ describe("Proof of Purchase", () => {
 
     it("allows the owner to generate tokens for a user", async () => {
       // allocating 5 board apes to the users wallet
-      await bayc.connect(user).mintApe(5, { value: parseEther("0.05") });
+      await bayc.connect(user).mintApe(5, { value: ethers.parseEther("0.05") });
       expect(await bayc.balanceOf(user.address)).to.equal(5);
 
       await pop.connect(owner).setActive(true);
@@ -115,7 +114,7 @@ describe("Proof of Purchase", () => {
 
     it("allows a user to purchase tokens", async () => {
       // the user first purchases bored ape tokens
-      await bayc.connect(user).mintApe(5, { value: parseEther("0.05") });
+      await bayc.connect(user).mintApe(5, { value: ethers.parseEther("0.05") });
       expect(await bayc.balanceOf(user.address)).to.equal(5);
 
       // the owner then activates the sale of the mofa tokens
@@ -124,7 +123,7 @@ describe("Proof of Purchase", () => {
       // then the user can purchase the mofa tokens
       await pop
         .connect(user)
-        .purchase(config.generateTest, { value: parseEther("0.12") });
+        .purchase(config.generateTest, { value: ethers.parseEther("0.12") });
       expect(await pop.balanceOf(user.address)).to.equal(3);
     });
   });
@@ -133,7 +132,7 @@ describe("Proof of Purchase", () => {
   describe("Soulbound", () => {
     it("restricts transfers after mint", async () => {
       // allocating 1 board ape to the users wallet
-      await bayc.connect(user).mintApe(1, { value: parseEther("0.01") });
+      await bayc.connect(user).mintApe(1, { value: ethers.parseEther("0.01") });
       expect(await bayc.balanceOf(user.address)).to.equal(1);
 
       await pop.connect(owner).setActive(true);
@@ -167,7 +166,7 @@ describe("Proof of Purchase", () => {
   describe("URI", () => {
     it("sets the URI", async () => {
       // allocating 5 board apes to the users wallet
-      await bayc.connect(user).mintApe(5, { value: parseEther("0.05") });
+      await bayc.connect(user).mintApe(5, { value: ethers.parseEther("0.05") });
       expect(await bayc.balanceOf(user.address)).to.equal(5);
 
       await pop.connect(owner).setActive(true);
@@ -187,11 +186,11 @@ describe("Proof of Purchase", () => {
     it("correctly withdraws to the vault", async () => {
       const startingBalance = await hre.ethers.provider.getBalance(vault);
 
-      await bayc.connect(user).mintApe(5, { value: parseEther("0.05") });
+      await bayc.connect(user).mintApe(5, { value: ethers.parseEther("0.05") });
       await pop.connect(owner).setActive(true);
       await pop
         .connect(user)
-        .purchase(config.generateTest, { value: parseEther("0.12") });
+        .purchase(config.generateTest, { value: ethers.parseEther("0.12") });
       await pop.connect(owner).releaseTotal();
 
       const endingBalance = await hre.ethers.provider.getBalance(vault);
