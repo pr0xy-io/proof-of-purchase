@@ -3,7 +3,6 @@ import "@nomicfoundation/hardhat-verify";
 import hre, { ethers } from "hardhat";
 import { globSync } from "glob";
 import fs from "fs";
-import { parseEther } from "ethers";
 
 /**
  * @title Deploy
@@ -36,13 +35,14 @@ const deploy = async () => {
 
   console.log(`Deploying contracts with the account: ${deployer.address}`);
   console.log(`Deploying Made of Ape [Test] to \`${network}\`.`);
+  console.log(`Associated Bored Ape address: ${configBayc.contractAddress}`);
 
   // defining the arguments for made of ape
   const mofaArgs = [
-    "Made of Ape",
+    "MadeOfApe",
     "MOFA",
     configBayc.contractAddress,
-    `${parseEther("0.00004")}`,
+    `${ethers.parseEther("0.00004")}`,
     [deployer.address],
     [100],
   ];

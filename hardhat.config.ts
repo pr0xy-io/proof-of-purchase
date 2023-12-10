@@ -1,5 +1,6 @@
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
+import "@nomicfoundation/hardhat-ethers";
 import getEnv from "./utils/getEnv";
 import dotenv from "dotenv";
 import "solidity-coverage";
