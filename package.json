@@ -1,6 +1,6 @@
 {
   "name": "proof-of-purchase",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "proof of purchase implementation",
   "main": "testing/index.ts",
   "repository": "https://github.com/pr0xy-io/proof-of-purchase",
@@ -12,19 +12,19 @@
     "build": "npx hardhat compile",
     "test": "cross-env NODE_ENV=development npx hardhat test --network hardhat",
     "coverage": "npx hardhat coverage",
-    "deploy:bayc": "cross-env NODE_ENV=deploy npx hardhat run ./scripts/deployment/deployBayc.ts",
-    "deploy:dev": "cross-env NODE_ENV=deploy npx hardhat run ./scripts/deployment/deploy.ts --network sepolia",
-    "deploy:prod": "cross-env NODE_ENV=deploy npx hardhat run ./scripts/deployment/deploy.ts --network mainnet"
+    "deploy:bayc": "cross-env NODE_ENV=deploy npx hardhat run ./scripts/deployment/deployBayc.ts --network sepolia",
+    "deploy:dev": "cross-env NODE_ENV=deploy npx hardhat run ./scripts/deployment/deployMofa.ts --network sepolia",
+    "deploy:prod": "cross-env NODE_ENV=deploy npx hardhat run ./scripts/deployment/deployMofa.ts --network mainnet"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.1",
-    "@nomicfoundation/hardhat-ethers": "^3.0.3",
+    "@nomicfoundation/hardhat-ethers": "^3.0.5",
     "@nomicfoundation/hardhat-network-helpers": "^1.0.8",
-    "@nomicfoundation/hardhat-toolbox": "^3.0.0",
-    "@nomicfoundation/hardhat-verify": "^1.0.3",
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@nomicfoundation/hardhat-verify": "^2.0.2",
     "@openzeppelin/contracts": "^4.9.2",
-    "@typechain/ethers-v6": "^0.4.0",
-    "@typechain/hardhat": "^8.0.0",
+    "@typechain/ethers-v6": "^0.5.1",
+    "@typechain/hardhat": "^9.1.0",
     "@types/chai": "^4.3.5",
     "@types/mocha": "^10.0.1",
     "@types/node": "^20.4.1",
@@ -32,9 +32,9 @@
     "cross-env": "^7.0.3",
     "dotenv": "^16.3.1",
     "erc721a": "^4.2.3",
-    "ethers": "^6.6.2",
+    "ethers": "^6.9.0",
     "glob": "^10.3.3",
-    "hardhat": "^2.16.1",
+    "hardhat": "^2.19.2",
     "hardhat-gas-reporter": "^1.0.9",
     "mocha": "^10.2.0",
     "rimraf": "^5.0.1",
@@ -43,5 +43,5 @@
     "typechain": "^8.2.0",
     "typescript": "^5.1.6"
   },
-  "packageManager": "yarn@3.6.1"
+  "packageManager": "yarn@4.0.2"
 }

@@ -21,14 +21,17 @@ const deploy = async () => {
   console.log(`Deploying Bored Ape Yacht Club [Test] to \`${network}\`.`);
 
   // defining the arguments for bored apes
-  const boredApeArgs = ["Bored Ape Yacht Club", "BAYC", 10000, 1619060596];
+  const boredApeArgs = [
+    "Bored Ape Test",
+    "BAT",
+    "https://cdn.pr0xy.io/mofa/boredapetest.json",
+  ];
 
   // deploy the bored ape yacht club contract
-  const bayc = await ethers.deployContract("BoredApeYachtClub", boredApeArgs);
+  const bayc = await ethers.deployContract("BoredApeTest", boredApeArgs);
   console.log(`Transaction pending with target address ${bayc.target}.`);
   await bayc.waitForDeployment();
 
-  // Start deployment, returning a promise that resolves to a contract object
   console.log(`Contract successfully deployed to ${bayc.target}.`);
   const timestamp = Date.now();
 
@@ -47,7 +50,7 @@ const deploy = async () => {
 
   // writing the data to a file to be referenced by the POP contract
   fs.writeFileSync(
-    `./deployments/deploymentBayc_${timestamp}.json`,
+    `./deployments/deploymentBayc_${timestamp}_${network}.json`,
     deployment,
     "utf-8"
   );

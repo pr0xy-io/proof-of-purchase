@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// POP Contracts v0.1.0
+// POP Contracts v0.2.0
 // Written by pr0xy
 
 pragma solidity ^0.8.18;
@@ -37,9 +37,9 @@ contract TokenGated is ERC721AQueryable, ERC2981, Ownable, ReentrancyGuard, Paym
     // maps the receipt to the primary collections `tokenId`
     mapping(uint256 => uint256) public receiptFor;
 
-    constructor(address _primaryCollection, uint256 _price, address[] memory _payees, uint256[] memory _shares) ERC721A("TokenGated", "POP") PaymentSplitter(_payees, _shares) {
+    constructor(string memory name, string memory symbol, address _primaryCollection, uint256 _price, address[] memory _payees, uint256[] memory _shares) ERC721A(name, symbol) PaymentSplitter(_payees, _shares) {
         primaryCollection = _primaryCollection;
-        payees= _payees;
+        payees = _payees;
 
         setPrice(_price);
     }

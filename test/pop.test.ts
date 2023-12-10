@@ -1,15 +1,14 @@
 import { HardhatEthersSigner } from "@nomicfoundation/hardhat-ethers/signers";
-import { parseEther } from "ethers";
 import { expect } from "chai";
-import hre from "hardhat";
+import hre, { ethers } from "hardhat";
 
 import "@nomicfoundation/hardhat-chai-matchers";
 import "@nomicfoundation/hardhat-ethers";
 
 const config = {
-  startingPrice: parseEther("0.04"),
-  updatedPrice: parseEther("0.02"),
-  generateTest: [6, 9, 1],
+  startingPrice: ethers.parseEther("0.04"),
+  updatedPrice: ethers.parseEther("0.02"),
+  generateTest: [2, 4, 1],
 };
 
 /**
@@ -17,8 +16,6 @@ const config = {
  * @description Test suite for Proof of Purchase token.
  *
  * @resource https://hardhat.org/tutorial
- *
- * todo: beforeAll instead of beforeEach (https://stackoverflow.com/questions/37912397)
  */
 describe("Proof of Purchase", () => {
   let pop: any;
@@ -38,32 +35,20 @@ describe("Proof of Purchase", () => {
     vault = signers[3];
 
     // deploys a bored ape contract to test interactions with it
-    bayc = await hre.ethers.deployContract("BoredApeYachtClub", [
-      "Bored Ape Yacht Club",
-      "BAYC",
-      10000,
-      1619060596,
+    bayc = await hre.ethers.deployContract("BoredApeTest", [
+      "Bored Ape Test",
+      "BAT",
+      "https://cdn.pr0xy.io/mofa/boredapetest.json",
     ]);
 
     pop = await hre.ethers.deployContract("TokenGated", [
+      "ProofOfPurchase",
+      "POP",
       bayc.target,
       config.startingPrice,
       [vault.address],
       [100],
     ]);
-
-    // ensuring the sale is active for testing
-    await bayc.connect(owner).flipSaleState();
-    const state = await bayc.saleIsActive();
-    expect(state).to.equal(true);
-  });
-
-  /** @description Running some basic BAYC functions. */
-  describe("Bored Ape Yacht Club", () => {
-    it("allows someone to purchase a BAYC", async () => {
-      await bayc.connect(user).mintApe(5, { value: parseEther("0.40") });
-      expect(await bayc.balanceOf(user.address)).to.equal(5);
-    });
   });
 
   /** @description Tests related to initial deployment. */
@@ -72,12 +57,6 @@ describe("Proof of Purchase", () => {
       const contractOwner = await pop.owner();
       expect(contractOwner).to.equal(owner.address);
     });
-
-    // todo: implement this for the payment splitter
-    // it("properly sets the vault", async () => {
-    //   const contractVault = await pop.vault();
-    //   expect(contractVault).to.equal(vault.address);
-    // });
 
     it("properly initializes the price", async () => {
       const contractPrice = await pop.price();
@@ -117,9 +96,9 @@ describe("Proof of Purchase", () => {
     });
 
     it("allows the owner to generate tokens for a user", async () => {
-      // allocating 10 board apes to the users wallet
-      await bayc.connect(user).mintApe(10, { value: parseEther("0.80") });
-      expect(await bayc.balanceOf(user.address)).to.equal(10);
+      // allocating 5 board apes to the users wallet
+      await bayc.connect(user).mintApe(5, { value: ethers.parseEther("0.05") });
+      expect(await bayc.balanceOf(user.address)).to.equal(5);
 
       await pop.connect(owner).setActive(true);
 
@@ -132,13 +111,28 @@ describe("Proof of Purchase", () => {
         expect(await pop.receiptFor(index)).to.equal(primaryToken);
       });
     });
+
+    it("allows a user to purchase tokens", async () => {
+      // the user first purchases bored ape tokens
+      await bayc.connect(user).mintApe(5, { value: ethers.parseEther("0.05") });
+      expect(await bayc.balanceOf(user.address)).to.equal(5);
+
+      // the owner then activates the sale of the mofa tokens
+      await pop.connect(owner).setActive(true);
+
+      // then the user can purchase the mofa tokens
+      await pop
+        .connect(user)
+        .purchase(config.generateTest, { value: ethers.parseEther("0.12") });
+      expect(await pop.balanceOf(user.address)).to.equal(3);
+    });
   });
 
   /** @description Ensuring the tokens are soulbound (untradable). */
   describe("Soulbound", () => {
     it("restricts transfers after mint", async () => {
       // allocating 1 board ape to the users wallet
-      await bayc.connect(user).mintApe(1, { value: parseEther("0.08") });
+      await bayc.connect(user).mintApe(1, { value: ethers.parseEther("0.01") });
       expect(await bayc.balanceOf(user.address)).to.equal(1);
 
       await pop.connect(owner).setActive(true);
@@ -165,6 +159,43 @@ describe("Proof of Purchase", () => {
             "0x01"
           )
       ).to.be.revertedWith("token is soulbound");
+    });
+  });
+
+  /** @description Properly sets the URI. */
+  describe("URI", () => {
+    it("sets the URI", async () => {
+      // allocating 5 board apes to the users wallet
+      await bayc.connect(user).mintApe(5, { value: ethers.parseEther("0.05") });
+      expect(await bayc.balanceOf(user.address)).to.equal(5);
+
+      await pop.connect(owner).setActive(true);
+
+      await pop.connect(owner).generate(user.address, config.generateTest);
+
+      await pop.setBaseURI("https://cdn.pr0xy.io/mofa/");
+
+      const uri = await pop.tokenURI(1);
+
+      expect(uri).to.equal("https://cdn.pr0xy.io/mofa/1");
+    });
+  });
+
+  /** @description Ensuring withdrawals are performed correctly. */
+  describe("Withdrawals", () => {
+    it("correctly withdraws to the vault", async () => {
+      const startingBalance = await hre.ethers.provider.getBalance(vault);
+
+      await bayc.connect(user).mintApe(5, { value: ethers.parseEther("0.05") });
+      await pop.connect(owner).setActive(true);
+      await pop
+        .connect(user)
+        .purchase(config.generateTest, { value: ethers.parseEther("0.12") });
+      await pop.connect(owner).releaseTotal();
+
+      const endingBalance = await hre.ethers.provider.getBalance(vault);
+
+      expect(endingBalance).to.be.gt(startingBalance);
     });
   });
 });
